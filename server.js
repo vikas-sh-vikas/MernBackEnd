@@ -1,10 +1,12 @@
 require('dotenv').config()
   
 const express = require('express')
+const app = express()
 const mongoose = require('mongoose')
  
 const WorkoutRoutes = require('./Routs/workout')
 const UserRoutes = require('./Routs/user')
+const bodyParser = require("body-parser");
 
 mongoose.connect(process.env.MONG_URL)
     .then(() => {
@@ -16,18 +18,11 @@ mongoose.connect(process.env.MONG_URL)
         console.log(error)
     })
 
-const app = express()
-
 app.use(express.json())
-{
-     
-}
-app.use((req,res,next) => {
-    next()
-})
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
 
 app.use('/api/workouts', WorkoutRoutes)
 app.use('/api/user', UserRoutes)
- 
  
 
